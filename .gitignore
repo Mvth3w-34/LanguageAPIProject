@@ -369,3 +369,4 @@ EVs.env
 /LanguageProjectBackend/Properties/launchSettings.json
 /LanguageProjectBackend/Properties/serviceDependencies.json
 /LanguageProjectBackend/Properties/serviceDependencies.local.json
+/LanguageProjectBackend/LanguageProjectBackend.http
