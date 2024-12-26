@@ -1,18 +1,12 @@
-using Microsoft.EntityFrameworkCore;
-using LanguageProjectBackend.Models;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.AspNetCore.Hosting.Builder;
-using Microsoft.AspNetCore.Components.RenderTree;
 using LanguageProjectBackend.Data;
-using System.Runtime.InteropServices;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+
+
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
-
-DotNetEnv.Env.Load();
-
-
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -41,3 +35,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
