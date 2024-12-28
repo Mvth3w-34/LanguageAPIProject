@@ -363,10 +363,13 @@ MigrationBackup/
 FodyWeavers.xsd
 
 #EV
-EVs.env
-/LanguageProjectBackend/appsettings.json
-/LanguageProjectBackend/appsettings.Development.json
-/LanguageProjectBackend/Properties/launchSettings.json
-/LanguageProjectBackend/Properties/serviceDependencies.json
-/LanguageProjectBackend/Properties/serviceDependencies.local.json
-/LanguageProjectBackend/LanguageProjectBackend.http
+LanguageProjectBackend/EVs.env
+LanguageProjectBackend/appsettings.json
+LanguageProjectBackend/appsettings.Development.json
+LanguageProjectBackend/Properties/launchSettings.json
+LanguageProjectBackend/Properties/serviceDependencies.json
+LanguageProjectBackend/Properties/serviceDependencies.local.json
+LanguageProjectBackend/LanguageProjectBackend.http
+LanguageProjectFrontend/appsettings*
+/LanguageProjectFrontend/Properties/launchSettings.json
+/Translator test
