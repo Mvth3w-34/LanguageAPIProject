@@ -1,0 +1,62 @@
+﻿@page "/userRegistration"
+@using LanguageProjectFrontend.DtoModels
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Registration</PageTitle>
+<section class="d-flex flex-column align-items-center">
+    <div>
+        <h1 class="text-center">Create New Subscription</h1>
+    </div>
+    <EditForm model=@userCreateDto OnValidSubmit="HandleValidation" class="d-flex flex-column gap-2 w-75 p-4 rounded-2 bg-white">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="d-block">
+            <label for="fname">First Name</label>
+            <br>
+            <InputText id="fname" class="form-control" @bind-Value="userCreateDto.FirstName"/>
+        </div>
+        <div class="d-block">
+            <label for="lname">Last Name</label>
+            <br>
+            <InputText id="lname" class="form-control" @bind-Value="userCreateDto.LastName"/>
+        </div>
+        <div class="d-block">
+            <label for="email">Email</label>
+            <br>
+            <InputText id="email" class="form-control" @bind-Value="userCreateDto.Email"/>
+        </div>
+        <div class="d-block">
+            <label for="frequency">Email Frequency</label>
+            <br>
+            <InputSelect id="frequency" class="form-control" @bind-Value="userCreateDto.EmailFrequency">
+                <option disabled></option>
+                <option value="" >Select the frequency you would like to be emailed...</option>
+                <option value="Daily">Daily</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Month">Month</option>
+            </InputSelect>
+        </div>
+        <div class="d-block">
+            <label for="preference">Language Preference</label>
+            <InputSelect id="languagepreference" class="form-control" @bind-Value="userCreateDto.LanguagePreference">
+                <option disabled></option>
+                <option value="" >Select a language...</option>
+                <option value="Swahili">Swahili</option>
+                <option value="Arabic">Arabic</option>
+                <option value="French">French</option>
+            </InputSelect>
+        </div>
+        <input type="submit" class="btn btn-primary m-3"/>
+
+
+
+    </EditForm>
+</section>
+
+@code {
+    private UserCreateDto userCreateDto = new UserCreateDto();
+    
+
+
+}
