@@ -1,4 +1,5 @@
 using LanguageProjectBackend.Data;
+using LanguageProjectBackend.Services;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -15,18 +16,13 @@ builder.Services.AddDbContext<LanguageProjectContext>(options =>
 builder.Services.AddScoped<IUserRepo, UserRepository>();
 builder.Services.AddScoped<IWordRepo, WordRepository>();
 builder.Services.AddScoped<IUserWordRepo, UserWordRepository>();
+builder.Services.AddScoped<EmailSender>();
+builder.Services.AddScoped<Translator>();
 
-
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 app.UseHttpsRedirection();
 
