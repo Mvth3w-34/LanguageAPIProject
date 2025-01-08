@@ -373,3 +373,8 @@ LanguageProjectBackend/LanguageProjectBackend.http
 LanguageProjectFrontend/appsettings*
 /LanguageProjectFrontend/Properties/launchSettings.json
 /Translator test
+/Backend
+/Frontend
+/LanguageProjectBackend/LanguageAPIProjectRedone.http
+/LanguageLearingApplication.sln
+/EmailScheduler

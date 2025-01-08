@@ -1,0 +1,24 @@
+﻿@page "/successfulSubmission"
+@page "/successfulSubmission/success={isSuccess}"
+@if (isSuccess == "true")
+{
+    <div class="rounded-2 bg-white p-2">
+        <h1 class="text-success-emphasis"> Your Submission was successful. Thank you for subscribing!</h1>
+        <NavLink href="/"><button class="btn btn-primary">Return to Menu</button></NavLink>
+    </div>
+}
+ else{
+    <div class="rounded-2 bg-white p-2">
+        <h1 class="text-success-emphasis"> Your Submission was unsuccessful. Please try again!</h1>
+        <NavLink href="/userRegistration">
+            <button class="btn btn-primary">Return to Registration</button>
+        </NavLink>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public string isSuccess { get; set; }
+
+}
