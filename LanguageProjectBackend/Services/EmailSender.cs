@@ -12,8 +12,9 @@ namespace LanguageProjectBackend.Services
         private readonly IUserRepo _userRepository;
         private readonly IWordRepo _wordRepository;
         private readonly IUserWordRepo _userWordRepository;
-        private string apiKey = Environment.GetEnvironmentVariable("EMAIL_API_KEY");
-        private string sender = Environment.GetEnvironmentVariable("EMAIL_SENDER");
+        private string _apiKey = Environment.GetEnvironmentVariable("EMAIL_API_KEY");
+        private string _sender = Environment.GetEnvironmentVariable("EMAIL_SENDER");
+        private string templateId = Environment.GetEnvironmentVariable("TEMPLATE_ID");
 
 
         public EmailSender(IUserRepo userRepo, IUserWordRepo uWord, IWordRepo wordRepo)
@@ -23,9 +24,6 @@ namespace LanguageProjectBackend.Services
             _userWordRepository = uWord;
         }
 
-        public EmailSender()
-        {
-        }
 
         //This method will send an email to user based on the frequency they previously selected.
         public void SendNewWordEmail(string emailFrequency)
@@ -41,7 +39,7 @@ namespace LanguageProjectBackend.Services
 
                 NewWord newWord = _wordRepository.GetNewWord(user.Id); //Get a new word for the user.
 
-                var plainTextContext = ""; //Email content
+                var content = ""; //Email content
 
                 //Check if a new word is returned.
                 if (newWord != null)
@@ -86,38 +84,43 @@ namespace LanguageProjectBackend.Services
 
 
                     //Compose the content for the email 
-                    plainTextContext = $"Hello {user.FirstName}, \n Your {user.LanguagePreference} word of the day is {translation} which in english means {newWord.Word}.";
+                    content = $"Hello {user.FirstName}, \n Your {user.LanguagePreference} word of the day is {translation} which in english means {newWord.Word}.";
 
                 }
                 else
                 {
                     //Compose an email letting the user know that they have completed the current dictionary set.
-                    plainTextContext = $"Hello {user.FirstName}, \n We are all out of words for you at the moment ";
+                    content = $"Hello {user.FirstName}, \n We are all out of words for you at the moment ";
                 }
 
                 //Components needed for the email.
-                var client = new SendGridClient(apiKey);
-                var from = new EmailAddress(sender);
-                var to = new EmailAddress(user.Email);
-                var subject = "Confirmation of subscription";
-                var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContext, "");
-                var response = await client.SendEmailAsync(msg);
+
+                SendEmail(user.Email, "New Vocabulary Word", content);
+
 
             }
 
         }
-        public void SendConfirmation(string email)
+        public void SendEmail(string email, string subject, string emailContent)
         {
-            if (apiKey.IsNullOrEmpty())
+            if (_apiKey.IsNullOrEmpty())
             {
                 throw new Exception("The api key is empty");
             }
-            var client = new SendGridClient(apiKey);
-            var from = new EmailAddress(sender);
+            var client = new SendGridClient(_apiKey);
+            var from = new EmailAddress(_sender, "VocabHelper");
             var to = new EmailAddress(email);
-            var subject = "Confirmation of subscription";
-            var plainTextContext = "Thank you for subscribing!";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContext, "");
+            var msg = new SendGridMessage
+            {
+                TemplateId = templateId,
+                From = from
+            };
+
+            msg.AddTo(to);
+
+            //Overides placeholders in the SendGrid template
+            msg.SetTemplateData(new { Subject = subject, Content = emailContent });
+
             var response = client.SendEmailAsync(msg);
         }
     }
