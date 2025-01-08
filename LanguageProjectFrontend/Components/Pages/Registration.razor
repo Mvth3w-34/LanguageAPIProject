@@ -14,19 +14,19 @@
         <div>
             <h1 class="text-center">Create New Subscription</h1>
         </div>
-        <div class="d-block">
+        <div>
             <label for="fname">First Name</label>
             <InputText id="fname" class="form-control" @bind-Value="@_userCreateDto.FirstName" />
         </div>
-        <div class="d-block">
+        <div >
             <label for="lname">Last Name</label>
             <InputText id="lname" class="form-control" @bind-Value="@_userCreateDto.LastName" />
         </div>
-        <div class="d-block">
+        <div>
             <label for="email">Email</label>
             <InputText id="email" class="form-control" @bind-Value="@_userCreateDto.Email" />
         </div>
-        <div class="d-block">
+        <div>
             <label for="frequency">Email Frequency</label>
             <InputSelect id="frequency" class="form-control" @bind-Value="@_userCreateDto.EmailFrequency">
                 <option disabled selected value="">Select the frequency you would like to be emailed...</option>
@@ -35,7 +35,7 @@
                 <option value="Month">Month</option>
             </InputSelect>
         </div>
-        <div class="d-block">
+        <div>
             <label for="preference">Language Preference</label>
             <InputSelect id="languagepreference" class="form-control" @bind-Value="@_userCreateDto.LanguagePreference">
                 <option disabled selected value="">Select a language...</option>
@@ -55,14 +55,10 @@
 
     private async Task HandleValidSubmission()
     {
-        using var client = new HttpClient { BaseAddress = new Uri($"https://localhost:{_port}/") };
-
-
+        using var client = new HttpClient { BaseAddress = new Uri($"https://localhost:{_port}/") };//Prepare to send data to backend api
         var response = await client.PostAsJsonAsync("api/users", _userCreateDto); // Serialize _userCreateDto to JSON
-
-
         string isSuccess= (response.IsSuccessStatusCode) ? "true" :"false";
-
+    
         NavigationManager.NavigateTo($"/successfulSubmission/success={isSuccess}");
 
     }
