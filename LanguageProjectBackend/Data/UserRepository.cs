@@ -1,7 +1,4 @@
 ﻿using LanguageProjectBackend.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Elfie.Diagnostics;
-using NuGet.Protocol.Plugins;
 
 namespace LanguageProjectBackend.Data
 {
@@ -21,11 +18,23 @@ namespace LanguageProjectBackend.Data
                 throw new ArgumentNullException(nameof(user));
             }
             _context.Users.Add(user);
+            SaveChanges();
         }
 
-        public void DeleteUser(int id)
+        public void DeleteUserById(int id)
         {
-            throw new NotImplementedException();
+            var user = _context.Users.Where(u => u.Id == id).FirstOrDefault();
+
+            _context.Users.Remove(user); // Cascade delete the user.
+            SaveChanges();
+        }
+
+        public void DeleteUserByEmail(string email)
+        {
+            var user = _context.Users.Where(u => u.Email == email).FirstOrDefault();
+
+            _context.Users.Remove(user); // Cascade delete the user.
+            SaveChanges();
         }
 
         public IEnumerable<User> GetUserByEmailFrequency(string frequency)
