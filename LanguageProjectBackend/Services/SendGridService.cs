@@ -9,7 +9,7 @@ using SendGrid.Helpers.Mail;
 namespace LanguageProjectBackend.Services
 {
     //This class will be used send emails to the client.
-    public class SendGrid
+    public class SendGridService
     {
         private readonly IUserRepo _userRepository;
         private readonly IWordRepo _wordRepository;
@@ -19,7 +19,7 @@ namespace LanguageProjectBackend.Services
         private string templateId = Environment.GetEnvironmentVariable("TEMPLATE_ID");
 
 
-        public SendGrid(IUserRepo userRepo, IUserWordRepo uWord, IWordRepo wordRepo)
+        public SendGridService(IUserRepo userRepo, IUserWordRepo uWord, IWordRepo wordRepo)
         {
             _userRepository = userRepo;
             _wordRepository = wordRepo;

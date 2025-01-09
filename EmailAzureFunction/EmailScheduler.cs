@@ -7,9 +7,9 @@ namespace EmailAzureFunction
     public class EmailScheduler
     {
         private readonly ILogger _logger;
-        private readonly EmailSender _sender;
+        private readonly SendGridService _sender;
 
-        public EmailScheduler(ILoggerFactory loggerFactory, EmailSender emailSender)
+        public EmailScheduler(ILoggerFactory loggerFactory, LanguageProjectBackend.Services.SendGridService emailSender)
         {
             _logger = loggerFactory.CreateLogger<EmailScheduler>();
             _sender = emailSender;
