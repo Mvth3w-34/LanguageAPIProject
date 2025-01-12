@@ -1,3 +1,5 @@
+using LanguageProjectBackend.Data;
+using LanguageProjectBackend.Dtos;
 using LanguageProjectBackend.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
@@ -8,15 +10,17 @@ namespace EmailAzureFunction
     {
         private readonly ILogger _logger;
         private readonly SendGridService _sender;
+        private readonly IUserRepo _userRepository;
 
-        public EmailScheduler(ILoggerFactory loggerFactory, LanguageProjectBackend.Services.SendGridService emailSender)
+        public EmailScheduler(ILoggerFactory loggerFactory, SendGridService emailSender, IUserRepo userRepo)
         {
             _logger = loggerFactory.CreateLogger<EmailScheduler>();
             _sender = emailSender;
+            _userRepository = userRepo;
         }
 
         [Function("SendEmail")]
-        public void Run([TimerTrigger("* 15 10 * * * ")] TimerInfo myTimer)
+        public async Task Run([TimerTrigger("* 15 10 * * * ")] TimerInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
@@ -27,8 +31,18 @@ namespace EmailAzureFunction
 
             int currentDate = DateTime.UtcNow.Day;
             DayOfWeek currentDay = DateTime.UtcNow.DayOfWeek;
+            List<GlobalUnsubscriberDto>? unsubscribedUsers = await _sender.FetchGlobalUnsubscribers(); //List of unsubscribed users
 
-            _sender.SendNewWordEmail("Daily");
+            //Check if any users have unsubscribed.
+            if (unsubscribedUsers != null)
+            {
+                foreach (var user in unsubscribedUsers)
+                {
+                    _userRepository.DeleteUserByEmail(user.Email);
+                }
+            }
+
+            _sender.SendNewWordEmail("Daily"); //Send email to daily subscribers.
 
             //Send email to weekly subscribers
             if (currentDay == DayOfWeek.Monday)

@@ -16,7 +16,7 @@ namespace LanguageProjectBackend.Services
         {
             if (string.IsNullOrEmpty(_key))
             {
-                throw new ArgumentNullException("_key");
+                throw new ArgumentNullException("_key not found");
             }
 
             string targetLanguage = "";

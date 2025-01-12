@@ -16,7 +16,7 @@ builder.Services.AddDbContext<LanguageProjectContext>(options =>
 builder.Services.AddScoped<IUserRepo, UserRepository>();
 builder.Services.AddScoped<IWordRepo, WordRepository>();
 builder.Services.AddScoped<IUserWordRepo, UserWordRepository>();
-builder.Services.AddScoped<EmailSender>();
+builder.Services.AddScoped<SendGridService>();
 builder.Services.AddScoped<Translator>();
 
 
