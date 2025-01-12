@@ -51,18 +51,19 @@ namespace LanguageProjectBackend.Services
                 request.RequestUri = new Uri(_endpoint + route);
                 request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
                 request.Headers.Add("Ocp-Apim-Subscription-Key", _key);
+
                 // _location required if you're using a multi-service or regional (not global) resource.
                 request.Headers.Add("Ocp-Apim-Subscription-Region", _location);
 
                 // Send the request and get response.
                 HttpResponseMessage response = client.Send(request);
+
                 // Read response as a string.
                 string jsonResponse = response.Content.ReadAsStringAsync().Result;
 
                 //Parse the text _key to get the translation
                 JArray jArray = JArray.Parse(jsonResponse);
                 translation = jArray[0]["translations"][0]["text"].ToString();
-
 
                 return translation;
             }

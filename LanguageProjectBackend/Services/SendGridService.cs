@@ -135,15 +135,18 @@ namespace LanguageProjectBackend.Services
             var client = new SendGridClient(_apiKey);
             var response = await client.RequestAsync(
                         method: SendGridClient.Method.GET,
-                        urlPath: "supression/global_unsubscribe"
+                        urlPath: "suppression/unsubscribes"
                 ).ConfigureAwait(false);
 
             //Check if the request went through
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (!response.IsSuccessStatusCode)
             {
-                throw new Exception("No users found");
+                var errorContent = await response.Body.ReadAsStringAsync().ConfigureAwait(false);
+                throw new Exception($"Error: {response.StatusCode}, Details: {errorContent}");
             }
-            var unsubscribedUsers = JsonConvert.DeserializeObject<List<GlobalUnsubscriberDto>>(response.ToString());
+
+            var responseBody = await response.Body.ReadAsStringAsync().ConfigureAwait(false);
+            var unsubscribedUsers = JsonConvert.DeserializeObject<List<GlobalUnsubscriberDto>>(responseBody);
 
             return unsubscribedUsers;
 

@@ -29,7 +29,7 @@ namespace EmailAzureFunction
                 _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
             }
 
-            int currentDate = DateTime.UtcNow.Day;
+            int currentDate = DateTime.UtcNow.Day; //Tracks the first of the month.
             DayOfWeek currentDay = DateTime.UtcNow.DayOfWeek;
             List<GlobalUnsubscriberDto>? unsubscribedUsers = await _sender.FetchGlobalUnsubscribers(); //List of unsubscribed users
 
@@ -47,7 +47,7 @@ namespace EmailAzureFunction
             //Send email to weekly subscribers
             if (currentDay == DayOfWeek.Monday)
             {
-                _sender.SendNewWordEmail("Monthly");
+                _sender.SendNewWordEmail("Weekly");
             }
 
             //Send email to monthly subscribers
