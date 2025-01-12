@@ -1,14 +1,10 @@
 ﻿using LanguageProjectBackend.Models;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using NuGet.Packaging.Signing;
-using System.Collections;
-using System.Collections.Immutable;
 
 namespace LanguageProjectBackend.Data
 {
 
     //This class will be used to interact with NewWords table in the database.
-    public class WordRepository: IWordRepo
+    public class WordRepository : IWordRepo
     {
         readonly LanguageProjectContext _context;
         public WordRepository(LanguageProjectContext context)
@@ -16,11 +12,11 @@ namespace LanguageProjectBackend.Data
             _context = context;
         }
 
-       
-        // This method generates a new word for the user, ensuring that the word is unique
+
+        // This method generates a new word for the user, ensuring that the word is unique.
         public NewWord GetNewWord(int id)
         {
-            NewWord newWord = _context.Words.Where(word => !_context.UserWords.Any(uw=> uw.WordId == word.Id && uw.UserId == id)).FirstOrDefault(); //Ensures a user gets a unique word
+            NewWord? newWord = _context.Words.Where(word => !_context.UserWords.Any(uw => uw.WordId == word.Id && uw.UserId == id)).FirstOrDefault(); //Ensures a user gets a unique word
 
             return newWord;
         }
@@ -29,17 +25,17 @@ namespace LanguageProjectBackend.Data
         public string GetTranslation(NewWord word, string languagePreference)
         {
             string? translation = "";
-            switch (languagePreference) 
+            switch (languagePreference)
             {
-                case "Swahili":
-                    translation = word.Swahili;
-                    break;
-                case "Arabic":
-                    translation = word.Arabic;
-                    break;
-                default:
-                    translation = word.French;
-                    break;
+            case "Swahili":
+                translation = word.Swahili;
+                break;
+            case "Arabic":
+                translation = word.Arabic;
+                break;
+            default:
+                translation = word.French;
+                break;
             }
 
             return translation;
@@ -54,18 +50,19 @@ namespace LanguageProjectBackend.Data
         // The following code below is for the case where I decide to expand this project for now it is just in the proof of concept stages.
 
 
-        //This method will add an english word to the database 
+        //This method will add an english word to the database.
         public void CreateNewWord(NewWord word)
         {
-            if (word == null) { 
+            if (word == null)
+            {
                 throw new ArgumentNullException(nameof(word));
             }
 
             _context.Words.Add(word);
 
         }
-        
-        //This method will be used to retrieve all of the new words in the database
+
+        //This method will be used to retrieve all of the new words in the database.
         public IEnumerable<NewWord> GetAllWords(NewWord word)
         {
             return _context.Words.ToList();
